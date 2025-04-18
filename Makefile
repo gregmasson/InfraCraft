@@ -1,6 +1,6 @@
 # Nom du dossier de l'environnement virtuel
 VENV_DIR := .venv
-ACTIVATE := $(VENV_DIR)/bin/activate
+ACTIVATE := source $(VENV_DIR)/bin/activate
 
 .PHONY: init install run freeze clean
 
@@ -8,12 +8,14 @@ ACTIVATE := $(VENV_DIR)/bin/activate
 init:
 	@echo "📦 Creating virtual environment..."
 	python3 -m venv $(VENV_DIR)
-	@echo "🚀 Activating and upgrading pip..."
-	$(ACTIVATE) && python -m pip install --upgrade pip
+	@echo "🚀 Activating virtual environment..."
+	. .venv/bin/activate
+	@echo "Upgrading pip..."
+	python -m pip install --upgrade pip
 	@echo "⚙️  Installing FastAPI and dependencies..."
-	$(ACTIVATE) && pip install fastapi uvicorn[standard] python-multipart pillow
+	pip install fastapi uvicorn[standard] python-multipart pillow
 	@echo "📝 Freezing dependencies to requirements.txt..."
-	$(ACTIVATE) && pip freeze > requirements.txt
+	pip freeze > requirements.txt
 	@echo "✅ Project initialized successfully."
 
 # Installation des dépendances à partir du requirements.txt

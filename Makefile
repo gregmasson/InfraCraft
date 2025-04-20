@@ -1,6 +1,6 @@
 # Nom du dossier de l'environnement virtuel
 VENV_DIR := .venv
-ACTIVATE := source $(VENV_DIR)/bin/activate
+ACTIVATE := $(VENV_DIR)/bin/activate
 
 .PHONY: init install run freeze clean
 
@@ -11,7 +11,7 @@ init:
 	@echo "🚀 Activating virtual environment..."
 	. .venv/bin/activate
 	@echo "Upgrading pip..."
-	python -m pip install --upgrade pip
+	python3 -m pip install --upgrade pip
 	@echo "⚙️  Installing FastAPI and dependencies..."
 	pip install fastapi uvicorn[standard] python-multipart pillow
 	@echo "📝 Freezing dependencies to requirements.txt..."
@@ -22,6 +22,11 @@ init:
 install:
 	@echo "📚 Installing from requirements.txt..."
 	$(ACTIVATE) && pip install -r requirements.txt
+
+
+build:
+	@echo "Construction de l'image Docker"
+	$(ACTIVATE) && docker build
 
 # Lancer l'application FastAPI en mode dev
 run:
